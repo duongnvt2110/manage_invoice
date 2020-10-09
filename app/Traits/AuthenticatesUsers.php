@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Http\Requests\UserFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
@@ -18,9 +19,9 @@ trait AuthenticatesUsers
      * @return \Illuminate\Http\JsonResponse
     */
 
-    public function login(Request $request)
+    public function login(UserFormRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('user_email', 'user_password');
         if ($token = auth()->attempt($credentials)) {
             return $this->respondWithToken($token);
         }

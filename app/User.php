@@ -2,11 +2,12 @@
 
 namespace App;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'user_name', 'user_email', 'user_password',
     ];
 
     /**
@@ -25,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'user_password', 'remember_token',
     ];
 
     /**
@@ -36,4 +37,72 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Using for custom email and password column
+    /**
+     * username
+     *
+     * @return void
+     */
+    public function username()
+    {
+        return 'user_email';
+    }
+
+    /**
+     * getAttributeCustomPassword
+     *
+     * @return void
+     */
+    public function getAttributeCustomPassword()
+    {
+        return 'user_password';
+    }
+
+    /**
+     * getAuthPassword
+     *
+     * @return void
+     */
+    public function getAuthPassword()
+    {
+        return $this->user_password;
+    }
+    // end
+
+    /**
+     * getJWTIdentifier
+     *
+     * @return void
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+     * getUserByEmail
+     *
+     * @param  mixed $email
+     * @return void
+     */
+    public function getUserByEmail($email)
+    {
+        $user = User::where('user_email',$email)->first();
+        return $user;
+    }
+
+    // public function setUserPasswordAttribute($value){
+    //     $this->attributes['user_password'] = bcrypt($value);
+    // }
 }
