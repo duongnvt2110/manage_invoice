@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 
-class UserFormRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
 
     public function __construct()
