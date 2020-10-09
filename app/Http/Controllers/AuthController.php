@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cookie;
 use App\Traits\AuthenticatesUsers;
 
 class AuthController extends Controller
