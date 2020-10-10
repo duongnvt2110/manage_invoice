@@ -5,14 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Rules\ThrottlesLogins;
 
 class UserLoginRequest extends FormRequest
 {
-
-    public function __construct()
-    {
-        $this->user = new User();
-    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -31,7 +27,12 @@ class UserLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_email' => 'required|string|exists:users,user_email',
+            'user_email' => [
+                'required',
+                'string',
+                'exists:users,user_email',
+                new ThrottlesLogins('login',config('cms.throlltes.maxAttempt'), config('cms.throlltes.decayInMinutes'))
+            ],
             'user_password' => 'required|string',
         ];
     }
@@ -48,11 +49,15 @@ class UserLoginRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $user = $this->user->getUserByEmail($this->user_email);
+            $user = $this->getUserAuth()->getUserByEmail($this->user_email);
             if ( !Hash::check($this->user_password, $user->user_password) ) {
                 $validator->errors()->add('user_password', 'Your current password is incorrect.');
             }
         });
         return;
+    }
+
+    public function getUserAuth(){
+        return app(User::class);
     }
 }
