@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Traits\AuthenticatesUsers;
 
+
 class AuthController extends Controller
 {
     use AuthenticatesUsers;

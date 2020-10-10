@@ -5,7 +5,6 @@ namespace App\Traits;
 use App\Http\Requests\UserLoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
-
 /**
  * Authenticate User
  */
@@ -25,7 +24,11 @@ trait AuthenticatesUsers
         if ($token = auth()->attempt($credentials)) {
             return $this->respondWithToken($token);
         }
-        return response()->json(['error' => 'Unauthorized'], 401);
+
+        if(auth('api')->check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        return redirect('login');
     }
 
         /**
