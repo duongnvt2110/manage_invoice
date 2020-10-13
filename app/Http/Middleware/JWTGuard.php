@@ -28,6 +28,9 @@ class JWTGuard
         $user = User::find($payload['sub']);
         auth()->login($user);
 
+        if(auth()->user()->user_status != User::ACTIVE){
+            return redirect('login')->with('error','User is not active');
+        }
         return $next($request);
     }
 }

@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('user_password')->nullable();
             $table->integer('user_status')->nullable();
             $table->string('user_active_key')->nullable()->unique();
-            $table->timestamp('frist_login')->nullable();
+            $table->timestamp('first_login')->nullable();
             $table->timestamp('last_login')->nullable();
             $table->timestamp('active_email_at')->nullable();
             $table->rememberToken();

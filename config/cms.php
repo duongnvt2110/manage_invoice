@@ -5,7 +5,7 @@
 return [
 
     'throlltes' => [
-        'maxAttempt'=> 1,
+        'maxAttempt'=> 5,
         'decayInMinutes' => 1
     ]
 
