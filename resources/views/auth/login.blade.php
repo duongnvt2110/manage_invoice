@@ -6,8 +6,12 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
-
                 <div class="card-body">
+                    @if (Session::has('error'))
+                        <span class="invalid-feedback" role="alert">
+                            {{ Session::get('error') }}
+                        </span>
+                    @endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -57,8 +61,8 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                @if (Route::has('password.reset'))
+                                    <a class="btn btn-link" href="{{ route('password.reset') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif

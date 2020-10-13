@@ -22,6 +22,11 @@ trait AuthenticatesUsers
     {
         $credentials = $request->only('user_email', 'user_password');
         if ($token = auth()->attempt($credentials)) {
+            if(empty(auth()->user()->first_login)){
+                auth()->user()->first_login = now();
+            }
+            auth()->user()->last_login = now();
+            auth()->user()->save();
             return $this->respondWithToken($token);
         }
 
@@ -82,5 +87,6 @@ trait AuthenticatesUsers
         }
         return response(null, Response::HTTP_BAD_REQUEST);
     }
+
 }
 

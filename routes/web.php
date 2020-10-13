@@ -20,6 +20,15 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/','HomeController@welcome')->name('welcome');
     Route::get('/login','AuthController@showLoginForm')->name('login');
     Route::post('/login','AuthController@login');
+
+    Route::get('/register','RegisterController@showRegistrationForm')->name('register');
+    Route::post('/register','RegisterController@register');
+    Route::get('/confirm','RegisterController@confirm')->name('register.confirm');
+
+    Route::get('/reset','ResetPasswordController@showResetPasswordForm')->name('password.reset');
+    Route::post('/reset','ResetPasswordController@reset')->name('password.email');
+    Route::get('/password_confirm','ResetPasswordController@showConfirmationForm')->name('password.confirm');
+    Route::post('/password_confirm','ResetPasswordController@confirm')->name('password.update');
 });
 
 Route::group(['middleware' => 'jwt.guard'], function () {
