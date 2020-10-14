@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
@@ -24,8 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // dump(auth());
-        // exit;
         return view('home');
     }
 
