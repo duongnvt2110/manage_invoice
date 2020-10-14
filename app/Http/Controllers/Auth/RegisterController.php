@@ -2,72 +2,56 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Http\Requests\UserRegisterRequest;
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\Mail\EmailRegister;
 use App\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function showRegistrationForm()
     {
-        $this->middleware('guest');
+        return view('auth.register');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function register(UserRegisterRequest $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        $registerFrom = $request->only(['user_name','user_email','user_password']);
+
+        $user = User::create([
+            'user_name' => $registerFrom['user_name'],
+            'user_email' => $registerFrom['user_email'],
+            'user_password' => bcrypt($registerFrom['user_password']),
+            'user_status' => User::CONFIRMATION,
+            'user_active_key' => Str::limit(md5($registerFrom['user_email'].Str::random()),25,''),
+            'first_login' => null,
+            'last_login' => null,
+            'active_email_at' => null,
+            'remember_token' => Str::random(10),
         ]);
+
+        if(app()->environment() == 'local'){
+            Mail::to('meocom10@gmail.com')->send(new EmailRegister($user->user_active_key));
+        }else{
+            Mail::to($registerFrom['user_email'])->send(new EmailRegister($user->user_active_key));
+        }
+
+        return redirect('/login');
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+    public function confirm(Request $request){
+
+        $confirmForm = $request->only('token');
+        User::where('user_active_key',$confirmForm['token'])
+        ->update([
+            'user_status'=> User::ACTIVE,
+            'user_active_key'=> null
         ]);
+
+        return redirect('login');
     }
+
 }
