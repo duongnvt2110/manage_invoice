@@ -6,13 +6,15 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable,HasRoles;
 
-    CONST CONFIRMATION = 1;
-    CONST ACTIVE = 0;
+    CONST CONFIRMATION = 0;
+    CONST ACTIVE = 1;
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $guarded = [];
 
+    protected $guard_name = 'jwt';
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -101,7 +104,6 @@ class User extends Authenticatable implements JWTSubject
         $user = User::where('user_email',$email)->first();
         return $user;
     }
-
     // public function setUserPasswordAttribute($value){
     //     $this->attributes['user_password'] = bcrypt($value);
     // }

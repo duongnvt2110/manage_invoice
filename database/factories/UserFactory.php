@@ -21,10 +21,10 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'user_name' => $faker->name,
         'user_email' => $faker->unique()->safeEmail,
-        'user_password' => '$2y$10$ztmcadUcmNKlyfciLGHVVuXfPdwYtcYOMSwHBNd4h9VptaF0aBKLG', // 123456
+        'user_password' => '$2y$10$crmroUiuL9hDckw9bHMg3Ots26nMZANyiFyZp4s3ARich1e/wsA4S', // 123456
         'user_status' => 0,
         'user_active_key' => Str::random(20),
-        'frist_login' => now(),
+        'first_login' => now(),
         'last_login' => now(),
         'active_email_at' => now(),
         'remember_token' => Str::random(10),
