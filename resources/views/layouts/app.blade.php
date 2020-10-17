@@ -28,9 +28,11 @@
                 <div class="sidebar-heading">Dashboard</div>
                 <div class="list-group list-group-flush">
                     <a href="{{ route('home') }} " class="list-group-item list-group-item-action bg-light">Home</a>
-                    <a href="{{ route('role.index') }} " class="list-group-item list-group-item-action bg-light">Roles</a>
-                    <a href="{{ route('permission.index') }} " class="list-group-item list-group-item-action bg-light">Permissions</a>
-                    <a href="{{ route('user.index') }} " class="list-group-item list-group-item-action bg-light">Users</a>
+                    @if(auth()->user()->hasRole('admin'))
+                        <a href="{{ route('role.index') }} " class="list-group-item list-group-item-action bg-light">Roles</a>
+                        <a href="{{ route('permission.index') }} " class="list-group-item list-group-item-action bg-light">Permissions</a>
+                        <a href="{{ route('user.index') }} " class="list-group-item list-group-item-action bg-light">Users</a>
+                    @endif
                 </div>
             </div>
             @endif
@@ -66,7 +68,7 @@
                                 @else
                                     <li class="nav-item dropdown">
                                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                            {{ Auth::user()->name }}
+                                            {{ Auth::user()->user_name }}
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

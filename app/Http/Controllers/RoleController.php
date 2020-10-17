@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Policies\RolePolicy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -13,9 +15,10 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $this->authorize('viewAny',Role::class);
         $roles = Role::get();
         return view('role.index',compact('roles'));
     }
@@ -28,7 +31,7 @@ class RoleController extends Controller
     public function create()
     {
         //
-        //$this->authorize('create',Role::class);
+        $this->authorize('create',Role::class);
         $permissions = Permission::get();
         return view('role.create',compact('permissions'));
     }
@@ -42,13 +45,19 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         //
-        //$this->authorize('create',Role::class);
+        $this->authorize('create',Role::class);
         $roleForm = $request->only('name','guard_name','permissions');
-        $role = Role::create([
-            'name' => $roleForm['name'],
-            'guard_name' => $roleForm['guard_name']
-        ]);
-        $role->syncPermissions($roleForm['permissions']);
+        DB::transaction(function () use ($roleForm) {
+            $role = Role::create([
+                'name' => $roleForm['name'],
+                'guard_name' => $roleForm['guard_name']
+            ]);
+            if(!empty($roleForm['permissions'])){
+                $role->syncPermissions($roleForm['permissions']);
+            }else{
+                $role->syncPermissions([]);
+            }
+        });
         return redirect()->route('role.index')->with('success','Create is success');
     }
 
@@ -72,7 +81,7 @@ class RoleController extends Controller
     public function edit(Role $role,$id)
     {
         //
-        //$this->authorize('update',$role);
+        $this->authorize('update',Role::class);
         $role = Role::where('id',$id)->first();
         $permissions = Permission::get();
         return view('role.edit',compact('role','permissions'));
@@ -88,17 +97,19 @@ class RoleController extends Controller
     public function update(Request $request, Role $role,$id)
     {
         //
-        //$this->authorize('update',$role);
+        $this->authorize('update',Role::class);
         $roleForm = $request->only('name','guard_name','permissions');
-        $role = tap(Role::where('id',$id)->first())->update([
-            'name'=>$roleForm['name'],
-            'guard_name'=>$roleForm['guard_name']
-        ]);
-        if(!empty($roleForm['permissions'])){
-            $role->syncPermissions($roleForm['permissions']);
-        }else{
-            $role->revokePermissionTo(Permission::get());
-        }
+        DB::transaction(function () use ($id,$roleForm) {
+            $role = tap(Role::where('id',$id)->first())->update([
+                'name'=>$roleForm['name'],
+                'guard_name'=>$roleForm['guard_name']
+            ]);
+            if(!empty($roleForm['permissions'])){
+                $role->syncPermissions($roleForm['permissions']);
+            }else{
+                $role->syncPermissions([]);
+            }
+        });
         return redirect()->route('role.index')->with('success','Update is success');
     }
 
@@ -111,7 +122,7 @@ class RoleController extends Controller
     public function destroy(Role $role,$id)
     {
         //
-        //$this->authorize('update',$role);
+        $this->authorize('delete',$role);
         Role::destroy($id);
         return redirect()->route('role.index')->with('success','Delete is success');
     }

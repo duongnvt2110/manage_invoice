@@ -18,19 +18,23 @@ class JWTGuard
      */
     public function handle($request, Closure $next)
     {
-        $token = $request->cookie('access_token');
-        if(empty($token)){
+        try {
+            $token = $request->cookie('access_token');
+            if(empty($token)){
+                return redirect('login');
+            }
+
+            $token = new Token($token);
+            $payload = JWTAuth::decode($token);
+            $user = User::find($payload['sub']);
+            auth()->login($user);
+
+            if(auth()->user()->user_status != User::ACTIVE){
+                return redirect('login')->with('error','User is not active');
+            }
+            return $next($request);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $th) {
             return redirect('login');
         }
-
-        $token = new Token($token);
-        $payload = JWTAuth::decode($token);
-        $user = User::find($payload['sub']);
-        auth()->login($user);
-
-        if(auth()->user()->user_status != User::ACTIVE){
-            return redirect('login')->with('error','User is not active');
-        }
-        return $next($request);
     }
 }

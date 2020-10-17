@@ -12,9 +12,10 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $this->authorize('viewAny',Permission::class);
         $permissions = Permission::get();
         return view('permission.index',compact('permissions'));
     }
@@ -27,7 +28,7 @@ class PermissionController extends Controller
     public function create()
     {
         //
-        //$this->authorize('create',permission::class);
+        $this->authorize('create',Permission::class);
         return view('permission.create');
     }
 
@@ -40,7 +41,7 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         //
-        //$this->authorize('create',permission::class);
+        $this->authorize('create',Permission::class);
         $permissionForm = $request->only('name','guard_name');
         Permission::create($permissionForm);
         return redirect()->route('permission.index')->with('success','Create is success');
@@ -66,7 +67,7 @@ class PermissionController extends Controller
     public function edit(Permission $permission,$id)
     {
         //
-        //$this->authorize('update',$permission);
+        $this->authorize('update',Permission::class);
         $permission = Permission::where('id',$id)->first();
         return view('permission.edit',compact('permission'));
     }
@@ -81,7 +82,7 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission,$id)
     {
         //
-        //$this->authorize('update',$permission);
+        $this->authorize('update',Permission::class);
         $permissionForm = $request->only('name','guard_name');
         Permission::where('id',$id)->update($permissionForm);
         return redirect()->route('permission.index')->with('success','Update is success');
@@ -96,7 +97,7 @@ class PermissionController extends Controller
     public function destroy(Permission $permission,$id)
     {
         //
-        //$this->authorize('update',$permission);
+        $this->authorize('update',Permission::class);
         Permission::destroy($id);
         return redirect()->route('permission.index')->with('success','Delete is success');
     }

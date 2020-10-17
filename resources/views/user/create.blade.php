@@ -7,13 +7,16 @@
             <form method="POST" action="{{route('user.store')}}">
                 @csrf
                 <div class="form-group">
-                <label for="Role Name">User Name</label>
-                    <input type="text" name="name" class="form-control" value=''>
-                <label for="Role Name">User Email</label>
-                <input type="text" name="email" class="form-control" value=''>
+                    <label for="Role Name">User Name</label>
+                    <input type="text" name="user_name" class="form-control" value='' required>
+                </div>
+                <div class="form-group">
+                    <label for="Role Name">User Email</label>
+                    <input type="text" name="user_email" class="form-control" value='' required>
+                </div>
                 <div class="form-group">
                     <label for="Role Name">Password</label>
-                <input type="password" name="password" class="form-control" value=''>
+                    <input type="password" name="user_password" class="form-control" value='' required>
                 </div>
                 <div class="form-group">
                     <label for="Guard Name">Role Name</label>

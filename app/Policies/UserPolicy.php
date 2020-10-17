@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Customer;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CustomerPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -19,17 +18,20 @@ class CustomerPolicy
     {
         //
     }
+    public function viewAny(User $user){
+        return $user->hasRole('admin');
+    }
 
     public function create(User $user){
-        return isset($user->id);
+        return $user->hasRole('admin');
     }
 
-    public function update(User $user, Customer $customer){
-        return $user->id = $customer->user_id && $user->hasRole('developer')  ;
+    public function update(User $user){
+        return $user->hasRole('admin');
     }
 
-    public function delete(User $user, Customer $customer){
-        return $user->id = $customer->user_id;
+    public function delete(User $user){
+        return $user->hasRole('admin');
     }
 
 }

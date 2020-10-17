@@ -6,21 +6,29 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\User;
+use Illuminate\Support\Facades\DB;
+use App\Services\Utils;
+use App\Events\SendMail;
+use Laravel\Ui\Presets\React;
 
 class UserController extends Controller
 {
+    protected $utils;
+
     public function __construct()
     {
         $this->middleware('jwt.guard')->except('index');
+        $this->utils = new Utils();
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $this->authorize('viewAny',User::class);
         $users = User::get();
         return view('user.index',compact('users'));
     }
@@ -33,7 +41,7 @@ class UserController extends Controller
     public function create()
     {
         //
-        //$this->authorize('create',user::class);
+        $this->authorize('create',User::class);
         $roles = Role::get();
         $permissions = Permission::get();
         return view('user.create',compact('roles','permissions'));
@@ -48,17 +56,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        //$this->authorize('create',user::class);
-        $userForm = $request->only('name','email','password','roles','permissions');
-        $user = User::create([
-            'name'=>$userForm['name'],
-            'email'=> $userForm['email'],
-            'password'=>bcrypt($userForm['password'])
-        ]);
-        if($user){
-            $user->syncRoles($userForm['roles']);
-            $user->givePermissionTo($userForm['permissions']);
-        }
+        $this->authorize('create',User::class);
+        $userForm = $request->only('user_name','user_email','user_password');
+        $roleForm = $request->only('roles','permissions');
+        DB::transaction(function () use ($userForm,$roleForm) {
+            $user = User::create(array_merge($userForm,$this->utils->getDefaultUserForm($userForm)));
+            event(new SendMail($user,$userForm));
+            if($user){
+                if(empty($roleForm['roles'])){
+                    $user->syncRoles([]);
+                }else{
+                    $user->syncRoles($roleForm['roles']);
+                }
+            }
+        });
         return redirect()->route('user.index')->with('success','Create is success');
     }
 
@@ -79,10 +90,10 @@ class UserController extends Controller
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(user $user,$id)
+    public function edit($id)
     {
         //
-        //$this->authorize('update',$user);
+        $this->authorize('update',User::class);
         $user = User::where('id',$id)->first();
         $roles = Role::get();
         $permissions = Permission::get();
@@ -96,21 +107,29 @@ class UserController extends Controller
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, user $user,$id)
+    public function update(Request $request,$id)
     {
-        //
-        //$this->authorize('update',$user);
-
-        $userForm = $request->only('roles','permissions');
-        $user = User::where('id',$id)->first();
-        if($user){
-            $user->syncRoles($userForm['roles']);
-            if(!empty($userForm['permissions'])){
-                $user->syncPermissions($userForm['permissions']);
-            }else{
-                $user->revokePermissionTo(Permission::get());
-            }
+        $this->authorize('update',User::class);
+        $userForm = $request->only('user_name','user_email','user_password');
+        $roleForm = $request->only('roles');
+        if(empty($userForm['user_password'])){
+            unset($userForm['user_password']);
+        }else{
+            $userForm = array_merge($userForm,$this->utils->getDefaultUserForm($userForm));
         }
+        DB::transaction(function () use ($id,$userForm,$roleForm) {
+            $user = tap(User::where('id',$id)->first())->update($userForm);
+            if($user){
+                if($user->wasChanged('user_password')){
+                    event(new SendMail($user,$userForm));
+                }
+                if(empty($roleForm['roles'])){
+                    $user->syncRoles([]);
+                }else{
+                    $user->syncRoles($roleForm['roles']);
+                }
+            }
+        });
         return redirect()->route('user.index')->with('success','Update is success');
     }
 
@@ -120,10 +139,10 @@ class UserController extends Controller
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(user $user,$id)
+    public function destroy($id)
     {
         //
-        //$this->authorize('update',$user);
+        $this->authorize('delete',User::class);
         User::destroy($id);
         return redirect()->route('user.index')->with('success','Delete is success');
     }

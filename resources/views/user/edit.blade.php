@@ -8,7 +8,15 @@
                 @csrf
                 <div class="form-group">
                     <label for="Role Name">User Name</label>
-                <input type="text" name="name" class="form-control" value='{{ $user->name }}' readonly>
+                    <input type="text" name="user_name" class="form-control" value='{{ $user->user_name }}'>
+                </div>
+                <div class="form-group">
+                    <label for="Role Name">User Email</label>
+                    <input type="text" name="user_email" class="form-control" value='{{ $user->user_email }}' >
+                </div>
+                <div class="form-group">
+                    <label for="Role Name">Password</label>
+                    <input type="password" name="user_password" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="Guard Name">Role Name</label>

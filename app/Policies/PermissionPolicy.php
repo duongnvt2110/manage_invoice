@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Analyst;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AnalystPolicy
+class PermissionPolicy
 {
     use HandlesAuthorization;
 
@@ -20,15 +19,19 @@ class AnalystPolicy
         //
     }
 
+    public function viewAny(User $user){
+        return $user->hasRole('admin');
+    }
+
     public function create(User $user){
-        return isset($user->id);
+        return $user->hasRole('admin');
     }
 
-    public function update(User $user, Analyst $analyst){
-        return $user->id = $analyst->user_id && $user->hasRole('developer')  ;
+    public function update(User $user){
+        return $user->hasRole('admin');
     }
 
-    public function delete(User $user, Analyst $analyst){
-        return $user->id = $analyst->user_id;
+    public function delete(User $user){
+        return $user->hasRole('admin');
     }
 }
