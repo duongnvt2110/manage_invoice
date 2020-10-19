@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Policies\RolePolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use App\User;
 class RoleController extends Controller
 {
     /**
@@ -18,7 +17,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         //
-        $this->authorize('viewAny',Role::class);
+        $this->authorize('viewAny',User::class);
         $roles = Role::get();
         return view('role.index',compact('roles'));
     }
