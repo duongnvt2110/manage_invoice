@@ -33,6 +33,7 @@
                         <a href="{{ route('permission.index') }} " class="list-group-item list-group-item-action bg-light">Permissions</a>
                         <a href="{{ route('user.index') }} " class="list-group-item list-group-item-action bg-light">Users</a>
                     @endif
+                    <a href="{{ route('loan.index') }} " class="list-group-item list-group-item-action bg-light">Loan Applications</a>
                 </div>
             </div>
             @endif

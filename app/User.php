@@ -101,10 +101,18 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getUserByEmail($email)
     {
-        $user = User::where('user_email',$email)->first();
+        $user = $this->where('user_email',$email)->first();
         return $user;
     }
     // public function setUserPasswordAttribute($value){
     //     $this->attributes['user_password'] = bcrypt($value);
     // }
+
+    public function loanAppAnalyst(){
+        return $this->belongsTo(LoanApplication::class,'id','analyst_id');
+    }
+
+    public function userCfo(){
+        return $this->belongsTo(LoanApplication::class,'id','cfo_id');
+    }
 }
