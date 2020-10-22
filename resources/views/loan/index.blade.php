@@ -24,7 +24,7 @@
             <tr>
                 <th>ID</th>
                 <th>Amount</th>
-                @if(auth()->user()->hasRole('admin'))
+                @if($user->is_admin)
                 <th>Analyst</th>
                 <th>CFO</th>
                 @endif
@@ -37,7 +37,7 @@
             <tr>
                 <td>{{ $loanApp->id }}</td>
                 <td>{{ $loanApp->amount }}</td>
-                @if(auth()->user()->hasRole('admin'))
+                @if($user->is_admin)
                     <td>{{ ($loanApp->userAnalyst->user_name)??'' }}</td>
                     <td>{{ $loanApp->userCfo->user_name??'' }}</td>
                 @endif
@@ -45,21 +45,25 @@
                 <td>
                     <div class="d-flex justify-content-center">
                         <div class="pr-2">
-                            <a href="{{ route('loan.edit',['id'=>$loanApp->id]) }}" class="btn btn-primary">View</a>
+                            <a href="{{ route('loan.show',['id'=>$loanApp->id]) }}" class="btn btn-primary">View</a>
                         </div>
                         <div class="pr-2">
-                            <form method="POST" action="{{ route('loan.update',['id'=> $loanApp->id ])}}" style="display: inline-flex;">
-                                @if($user->is_admin )
-                                    <button type="submit" class="btn btn-primary">
-                                        @if($loanApp->status_id == 1)
-                                            Send to Analyst
-                                        @endif
-                                        @if(in_array($loanApp->status_id,[3,4]))
-                                            Send to CFO
-                                        @endif
-                                    </button>
-                                @endif
-                            </form>
+                            @if($user->is_admin && in_array($loanApp->status_id,[1,3,4]))
+                                <a  href="{{ route('loan.analyzeEdit',['id'=>$loanApp->id])}}" class="btn btn-primary">
+                                    @if($loanApp->status_id == 1)
+                                        Send to Analyst
+                                    @else
+                                        Send to CFO
+                                    @endif
+                                </a>
+                            @endif
+                        </div>
+                        <div class="pr-2">
+                            @if(($user->is_analyst && in_array($loanApp->status_id,[2])) || ($user->is_cfo && in_array($loanApp->status_id,[5])))
+                                <a  href="{{ route('loan.edit',['id'=>$loanApp->id])}}" class="btn btn-primary">
+                                    Submit Analyze
+                                </a>
+                            @endif
                         </div>
                         <div class="pr-2">
                         @if($user->is_admin)

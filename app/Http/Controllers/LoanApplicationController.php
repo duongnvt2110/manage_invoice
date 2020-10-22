@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LoanApplication;
+use App\User;
 use Illuminate\Http\Request;
 
 class LoanApplicationController extends Controller
@@ -52,9 +53,12 @@ class LoanApplicationController extends Controller
      * @param  \App\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function show(LoanApplication $loanApplication)
+    public function show(LoanApplication $loanApplication,Request $request)
     {
         //
+        $loanApplication = $loanApplication->find($request->input('id'));
+        $user = auth()->user();
+        return view('loan.show',compact('loanApplication','user'));
     }
 
     /**
@@ -67,8 +71,7 @@ class LoanApplicationController extends Controller
     {
         //
         $loanApplication = $loanApplication->find($request->input('id'));
-        $user = auth()->user();
-        return view('loan.edit',compact('loanApplication','user'));
+        return view('loan.edit',compact('loanApplication'));
     }
 
     /**
@@ -78,22 +81,24 @@ class LoanApplicationController extends Controller
      * @param  \App\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LoanApplication $loanApplication,$id)
+    public function update(Request $request, LoanApplication $loanApplication)
     {
         //
-        $loanForm = $request->only('status');
-        $loan = LoanApplication::find($id);
-        if(!empty($loanForm['status']) && $loanForm['status'] != 2){
-            $loan->update(['status_id'=> $loanForm['status']]);
+        $loan = $loanApplication->find($request->input('id'));
+        $status = $request->input('status');
+
+        if(isset($status)){
+            $loan->update([
+                'status_id'=> $status
+            ]);
         }else{
             if($loan->status_id == 1){
                 $column = 'analyst_id';
-                $user_id = auth()->user()->id;
+                $user_id = $request->input('user_id');
                 $status_id = 2;
-            }
-            if(in_array($loan->status_id,[3,4])){
+            }else if(in_array($loan->status_id,[3,4])){
                 $column = 'cfo_id';
-                $user_id = auth()->user()->id;
+                $user_id = $request->input('user_id');
                 $status_id = 5;
             }
             $loan->update([
@@ -115,8 +120,31 @@ class LoanApplicationController extends Controller
         //
     }
 
-    public function sendAnalyst(Request $request,$id){
-        LoanApplication::where('id',$id)->update(['status_id'=> 2]);
+    public function analyze(Request $request,LoanApplication $loanApplication){
+        $loanApplication = $loanApplication->find($request->input('id'));
+        $users = User::whereHas('roles',function($query) use ($loanApplication){
+            if($loanApplication->status_id == 1){
+                $query->where('name','=','analyst');
+            }else{
+                $query->where('name','=','cfo');
+            }
+        })->get();
+        return view('loan.analyze',compact('users','loanApplication'));
+    }
+
+    public function updateAnalyze(Request $request,LoanApplication $loanApplication){
+        $loan = $loanApplication->find($request->input('id'));
+        $checkStatus = $request->input('status');
+        if(empty($checkStatus)){
+            if($loan->status_id == 2){
+                $status_id = ($checkStatus == 0)?3:4;
+            }else if($loan->status_id == 5){
+                $status_id = ($checkStatus == 0)?6:7;
+            }
+            $loan->update([
+                'status_id'=> $status_id
+            ]);
+        }
         return redirect()->route('loan.index');
     }
 }
