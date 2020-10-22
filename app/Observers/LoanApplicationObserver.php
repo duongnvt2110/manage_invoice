@@ -27,12 +27,12 @@ class LoanApplicationObserver
     public function updated(LoanApplication $loanApplication)
     {
         //
-        if($loanApplication->status_id == 2){
-            $loanApplication->update(['analyst_id'=>2]);
-        }
-        if($loanApplication->status_id == 5){
-            $loanApplication->update(['cfo_id'=>3]);
-        }
+        // if($loanApplication->status_id == 2){
+        //     $loanApplication->update(['analyst_id'=>2]);
+        // }
+        // if($loanApplication->status_id == 5){
+        //     $loanApplication->update(['cfo_id'=>3]);
+        // }
 
     }
 

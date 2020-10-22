@@ -115,4 +115,19 @@ class User extends Authenticatable implements JWTSubject
     public function userCfo(){
         return $this->belongsTo(LoanApplication::class,'id','cfo_id');
     }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function getIsAnalystAttribute()
+    {
+        return $this->hasRole('analyst');
+    }
+
+    public function getIsCfoAttribute()
+    {
+        return $this->hasRole('cfo');
+    }
 }

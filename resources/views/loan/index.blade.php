@@ -44,49 +44,31 @@
                 <th>{{ $loanApp->status->status }}</th>
                 <td>
                     <div class="d-flex justify-content-center">
-
-                            <div class="pr-2">
-                                <form method="POST" action="{{ route('loan.update',['id'=> $loanApp->id ])}}" style="display: inline-flex;">
-                                    @csrf
-                                    @if(auth()->user()->hasRole('admin') && $loanApp->status_id == 2)
-                                        <button type="submit" class="btn btn-primary">Send to Analyst</button>
-                                    @endif
-                                    @if(auth()->user()->hasRole('admin') && in_array($loanApp->status_id,[3,4]))
-                                        <button type="submit" class="btn btn-primary">Send to CFO</button>
-                                    @endif
-                                    @if(auth()->user()->hasRole('admin') && in_array($loanApp->status_id,[6,7]))
-                                        <button type="submit" class="btn btn-primary">Aprroved</button>
-                                    @endif
-                                </form>
-                            </div>
-                        @if(auth()->user()->hasRole('analyst') && $loanApp->status_id == 2)
-                            <div class="pr-2">
-                                <form method="POST" action="{{ route('loan.update',['id'=> $loanApp->id,'status'=>'3' ])}}" style="display: inline-flex;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary">Approved</button>
-                                </form>
-                                <form method="POST" action="{{ route('loan.update',['id'=> $loanApp->id,'status'=>'4'])}}" style="display: inline-flex;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary">Reject</button>
-                                </form>
-                            </div>
-                        @endif
-                        @if(auth()->user()->hasRole('cfo') && $loanApp->status_id == 5 )
                         <div class="pr-2">
-                            <form method="POST" action="{{ route('loan.update',['id'=> $loanApp->id,'status'=>'6' ])}}" style="display: inline-flex;">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Approved</button>
-                            </form>
-                            <form method="POST" action="{{ route('loan.update',['id'=> $loanApp->id,'status'=>'7'])}}" style="display: inline-flex;">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Reject</button>
+                            <a href="{{ route('loan.edit',['id'=>$loanApp->id]) }}" class="btn btn-primary">View</a>
+                        </div>
+                        <div class="pr-2">
+                            <form method="POST" action="{{ route('loan.update',['id'=> $loanApp->id ])}}" style="display: inline-flex;">
+                                @if($user->is_admin )
+                                    <button type="submit" class="btn btn-primary">
+                                        @if($loanApp->status_id == 1)
+                                            Send to Analyst
+                                        @endif
+                                        @if(in_array($loanApp->status_id,[3,4]))
+                                            Send to CFO
+                                        @endif
+                                    </button>
+                                @endif
                             </form>
                         </div>
+                        <div class="pr-2">
+                        @if($user->is_admin)
+                            <form method="POST" action="{{ route('loan.delete',['id'=> $loanApp->id ])}}" style="display: inline-flex;">
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         @endif
-                        <form method="POST" action="{{ route('loan.delete',['id'=> $loanApp->id ])}}" style="display: inline-flex;">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        </div>
                     </div>
                 </td>
             </tr>

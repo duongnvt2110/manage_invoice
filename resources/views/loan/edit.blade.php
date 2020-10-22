@@ -4,30 +4,25 @@
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <form method="POST" action="{{route('role.update',['id'=> $role->id])}}">
+            <form method="POST" action="{{route('loan.update',['id'=> $loanApplication->id])}}">
                 @csrf
                 <div class="form-group">
                     <label for="Role Name"></label>
-                <input type="text" name="name" class="form-control" value='{{$role->name}}' required>
+                    <a>{{$loanApplication->id }}</a>
                 </div>
                 <div class="form-group">
                     <label for="Guard Name">Guard Name</label>
-                    <input type="text" name="guard_name" class="form-control" value='{{$role->guard_name}}'>
+                    <a>{{$loanApplication->id }}</a>
                 </div>
-                <div class="form-group">
-                    <label for="Guard Name">Permission Name</label>
-                    <div class="container">
-                        <div class="row">
-                            @foreach ($permissions as $permission)
-                            <div class="col-md-2 col-xs-3">
-                            <input type="checkbox" class="form-check-input" name="permissions[]" value ="{{$permission->id}}" id="permission_{{$permission->id}}"
-                            {{ $role->hasPermissionTo($permission->name)?'checked':'' }}>
-                                <label class="form-check-label" for="exampleCheck1">{{ $permission->name}}</label>
-                            </div>
-                            @endforeach
-                        </div>
+                @if($user->is_admin)
+                    <div class="form-group">
+                        <label for="Guard Name">Method</label>
+                        <select  class="form-group" name="other_accept" id="method_accept">
+                            <option value="0">Approve</option>
+                            <option value="1">Reject</option>
+                        </select>
                     </div>
-                </div>
+                @endif
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>

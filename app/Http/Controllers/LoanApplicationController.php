@@ -16,7 +16,8 @@ class LoanApplicationController extends Controller
     {
         //
         $loanApps = LoanApplication::with('status','userAnalyst','userCfo')->get();
-        return view('loan.index',compact('loanApps'));
+        $user = auth()->user();
+        return view('loan.index',compact('loanApps','user'));
     }
 
     /**
@@ -62,10 +63,12 @@ class LoanApplicationController extends Controller
      * @param  \App\LoanApplication  $loanApplication
      * @return \Illuminate\Http\Response
      */
-    public function edit(LoanApplication $loanApplication)
+    public function edit(Request $request, LoanApplication $loanApplication)
     {
         //
-
+        $loanApplication = $loanApplication->find($request->input('id'));
+        $user = auth()->user();
+        return view('loan.edit',compact('loanApplication','user'));
     }
 
     /**
@@ -83,15 +86,20 @@ class LoanApplicationController extends Controller
         if(!empty($loanForm['status']) && $loanForm['status'] != 2){
             $loan->update(['status_id'=> $loanForm['status']]);
         }else{
-            if($loan->status_id == 2){
-                $loan->update(['status_id'=> 2]);
+            if($loan->status_id == 1){
+                $column = 'analyst_id';
+                $user_id = auth()->user()->id;
+                $status_id = 2;
             }
             if(in_array($loan->status_id,[3,4])){
-                $loan->update(['status_id'=> 5]);
+                $column = 'cfo_id';
+                $user_id = auth()->user()->id;
+                $status_id = 5;
             }
-            if(in_array($loan->status_id,[6,7])){
-                $loan->update(['status_id'=> 8]);
-            }
+            $loan->update([
+                $column => $user_id,
+                'status_id'=> $status_id
+            ]);
         }
         return redirect()->route('loan.index');
     }

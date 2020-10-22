@@ -67,9 +67,8 @@ Route::group(['middleware'=>'jwt.guard','prefix'=>'user'], function () {
 Route::group(['middleware'=>'jwt.guard','prefix'=>'loan'], function () {
     Route::get('/','LoanApplicationController@index')->name('loan.index');
     Route::get('/create','LoanApplicationController@create')->name('loan.create');
-    Route::post('/sendAnalyst/{id}','LoanApplicationController@sendAnalyst')->name('loan.sendAnalyst');
     Route::post('/store','LoanApplicationController@store')->name('loan.store');
-    Route::get('/edit/{id}','LoanApplicationController@edit')->name('loan.edit');
-    Route::post('/update/{id}','LoanApplicationController@update')->name('loan.update');
-    Route::post('/delete/{id}','LoanApplicationController@destroy')->name('loan.delete');
+    Route::get('/edit','LoanApplicationController@edit')->name('loan.edit');
+    Route::post('/update','LoanApplicationController@update')->name('loan.update');
+    Route::post('/delete','LoanApplicationController@destroy')->name('loan.delete');
 });
