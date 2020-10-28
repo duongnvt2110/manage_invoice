@@ -132,4 +132,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasRole('cfo');
     }
+
+    public function posts(){
+        return $this->belongsToMany(Post::class)->withTimestamps();
+    }
 }

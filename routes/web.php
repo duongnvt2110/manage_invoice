@@ -75,3 +75,7 @@ Route::group(['middleware'=>'jwt.guard','prefix'=>'loan'], function () {
     Route::get('/analyze','LoanApplicationController@analyze')->name('loan.analyzeEdit');
     Route::post('/analyze','LoanApplicationController@updateAnalyze')->name('loan.updateAnalyze');
 });
+
+Route::group(['middleware'=>'jwt.guard','prefix'=>'post'], function () {
+    Route::get('/','PostController@index')->name('post.index');
+});
