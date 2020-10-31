@@ -33,12 +33,12 @@
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->user_name }}</td>
                 <td>
-                    @foreach ($user->getRoleNames() as $role)
-                        <span class="badge badge-primary">{{ $role }}</span>
+                    @foreach($user->roles as $role)
+                        <span class="badge badge-primary">{{ $role->name }}</span>
                     @endforeach
                 </td>
                 <td>
-                    @foreach ($user->getAllPermissions() as $permission)
+                    @foreach($user->permissions as $permission)
                         <span class="badge badge-primary">{{ $permission->name }}</span>
                     @endforeach
                 </td>

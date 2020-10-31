@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         //
         $this->authorize('viewAny',User::class);
-        $users = User::get();
+        $users = User::with('roles','permissions')->get();
         return view('user.index',compact('users'));
     }
 
