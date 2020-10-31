@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Filters\PostFilters;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -15,18 +16,8 @@ class PostController extends Controller
      */
     public function index(Post $post,PostFilters $filters)
     {
-        //
-        //$search = $post->filter($filters)->get();
-        //$search = $post->get();
-        $user = auth()->user();
-        $post = Post::find(1);
-        $post->users()->attach(1);
-
-        foreach ($user->posts as $post) {
-            echo $post->pivot->created_at;
-        }
-        //$user->posts()->detach(1);
-        exit;
+        $posts = $post->with('user')->get();
+        return view('post.index',compact('posts'));
     }
 
     /**
@@ -37,6 +28,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('post.create');
     }
 
     /**
@@ -45,9 +37,12 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Post $post,Request $request)
     {
         //
+        $postForm = $request->only('title','status','content');
+        $post->create($postForm);
+        return redirect()->route('post.index');
     }
 
     /**
@@ -56,9 +51,11 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Post $post,$id)
     {
         //
+        $post = $post->whereSlug($id)->firstOrFail();
+        return view('post.show',compact('post'));
     }
 
     /**
@@ -67,9 +64,11 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Post $post,$id)
     {
         //
+        $post = $post->find($id);
+        return view('post.edit',compact('post'));
     }
 
     /**
@@ -82,6 +81,9 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+        $postForm = $request->only('title','status','content');
+        $post->find($request->input('id'))->update($postForm);
+        return redirect()->route('post.index');
     }
 
     /**
@@ -90,8 +92,11 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request,Post $post)
     {
         //
+        $id = $request->input('id');
+        $post->destroy($id);
+        return redirect()->route('post.index');
     }
 }

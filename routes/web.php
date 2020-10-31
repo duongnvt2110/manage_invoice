@@ -78,4 +78,10 @@ Route::group(['middleware'=>'jwt.guard','prefix'=>'loan'], function () {
 
 Route::group(['middleware'=>'jwt.guard','prefix'=>'post'], function () {
     Route::get('/','PostController@index')->name('post.index');
+    Route::get('/create','PostController@create')->name('post.create');
+    Route::post('/store','PostController@store')->name('post.store');
+    Route::get('/{slug}','PostController@show')->name('post.show');
+    Route::get('/edit/{id}','PostController@edit')->name('post.edit');
+    Route::post('/update','PostController@update')->name('post.update');
+    Route::post('/delete','PostController@destroy')->name('post.delete');
 });

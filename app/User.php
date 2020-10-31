@@ -134,6 +134,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function posts(){
-        return $this->belongsToMany(Post::class)->withTimestamps();
+        return $this->hasMany(Post::class,'created_by','id');
     }
 }
