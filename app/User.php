@@ -4,8 +4,10 @@ namespace App;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 
@@ -101,10 +103,37 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getUserByEmail($email)
     {
-        $user = User::where('user_email',$email)->first();
+        $user = $this->where('user_email',$email)->first();
         return $user;
     }
     // public function setUserPasswordAttribute($value){
     //     $this->attributes['user_password'] = bcrypt($value);
     // }
+
+    public function loanAppAnalyst(){
+        return $this->belongsTo(LoanApplication::class,'id','analyst_id');
+    }
+
+    public function userCfo(){
+        return $this->belongsTo(LoanApplication::class,'id','cfo_id');
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function getIsAnalystAttribute()
+    {
+        return $this->hasRole('analyst');
+    }
+
+    public function getIsCfoAttribute()
+    {
+        return $this->hasRole('cfo');
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class,'created_by','id');
+    }
 }

@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\LoanApplication;
 use Illuminate\Support\ServiceProvider;
+use App\User;
+use App\Observers\UserObserver;
+use App\Observers\LoanApplicationObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        User::observe(UserObserver::class);
+        LoanApplication::observe(LoanApplicationObserver::class);
     }
 }

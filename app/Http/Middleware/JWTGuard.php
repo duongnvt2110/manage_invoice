@@ -27,8 +27,10 @@ class JWTGuard
             $token = new Token($token);
             $payload = JWTAuth::decode($token);
             $user = User::find($payload['sub']);
+            if(empty($user)){
+                return redirect('login');
+            }
             auth()->login($user);
-
             if(auth()->user()->user_status != User::ACTIVE){
                 return redirect('login')->with('error','User is not active');
             }

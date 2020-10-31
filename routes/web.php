@@ -63,3 +63,25 @@ Route::group(['middleware'=>'jwt.guard','prefix'=>'user'], function () {
     Route::post('/update/{id}','UserController@update')->name('user.update');
     Route::post('/delete/{id}','UserController@destroy')->name('user.delete');
 });
+
+Route::group(['middleware'=>'jwt.guard','prefix'=>'loan'], function () {
+    Route::get('/','LoanApplicationController@index')->name('loan.index');
+    Route::get('/create','LoanApplicationController@create')->name('loan.create');
+    Route::post('/store','LoanApplicationController@store')->name('loan.store');
+    Route::get('/show','LoanApplicationController@show')->name('loan.show');
+    Route::get('/edit','LoanApplicationController@edit')->name('loan.edit');
+    Route::post('/update','LoanApplicationController@update')->name('loan.update');
+    Route::post('/delete','LoanApplicationController@destroy')->name('loan.delete');
+    Route::get('/analyze','LoanApplicationController@analyze')->name('loan.analyzeEdit');
+    Route::post('/analyze','LoanApplicationController@updateAnalyze')->name('loan.updateAnalyze');
+});
+
+Route::group(['middleware'=>'jwt.guard','prefix'=>'post'], function () {
+    Route::get('/','PostController@index')->name('post.index');
+    Route::get('/create','PostController@create')->name('post.create');
+    Route::post('/store','PostController@store')->name('post.store');
+    Route::get('/{slug}','PostController@show')->name('post.show');
+    Route::get('/edit/{id}','PostController@edit')->name('post.edit');
+    Route::post('/update','PostController@update')->name('post.update');
+    Route::post('/delete','PostController@destroy')->name('post.delete');
+});

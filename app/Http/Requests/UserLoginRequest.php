@@ -50,8 +50,13 @@ class UserLoginRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             $user = $this->getUserAuth()->getUserByEmail($this->user_email);
+            if(empty($user)){
+                $validator->errors()->add('user_email', 'Your email is incorrect.');
+                return;
+            }
             if ( !Hash::check($this->user_password, $user->user_password) ) {
                 $validator->errors()->add('user_password', 'Your current password is incorrect.');
+                return;
             }
         });
         return;
