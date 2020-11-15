@@ -34,8 +34,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        Auth::provider('jwt', function($app, array $config) {
-            return new UserServiceProvider($app['hash'], $config['model']);
-        });
+        // Auth::provider('jwt', function($app, array $config) {
+        //     return new UserServiceProvider($app['hash'], $config['model']);
+        // });
     }
 }

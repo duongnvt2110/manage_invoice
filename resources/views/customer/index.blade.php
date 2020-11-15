@@ -66,7 +66,7 @@
     //         keyword = $('#search').val();
     //         $.ajax({
     //             method: "POST",
-    //             url: "{{ route('customer.search')}}",
+    //             url: "#",
     //             data: {keyword: keyword},
     //             success: function(result){
     //                 if(result['status'] == 0){

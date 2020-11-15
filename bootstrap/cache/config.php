@@ -44,7 +44,6 @@
       27 => 'App\\Providers\\EventServiceProvider',
       28 => 'App\\Providers\\RouteServiceProvider',
       29 => 'App\\Providers\\RepositoryServiceProvider',
-      30 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
     ),
     'aliases' => 
     array (
@@ -85,14 +84,13 @@
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Debugbar' => 'Barryvdh\\Debugbar\\Facade',
-      'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
     ),
   ),
   'auth' => 
   array (
     'defaults' => 
     array (
-      'guard' => 'jwt',
+      'guard' => 'web',
       'passwords' => 'users',
     ),
     'guards' => 

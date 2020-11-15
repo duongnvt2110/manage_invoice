@@ -34,11 +34,11 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
             'customer_name'=> $data['customer_name']
         ]);
         if(count($data) > 2 && isset($data['product_name'])){
-            $productData = $this->customerService->getFormCustomerData($data);
             $invoice = $customer->invoices()->create([
                 'create_date' => Carbon::now()
             ]);
             unset($data['product_id']);
+            $productData = $this->customerService->getFormCustomerData($data);
             foreach($productData as $product){
                 $product = Product::create($product);
                 $invoice->products()->attach($product->id);
