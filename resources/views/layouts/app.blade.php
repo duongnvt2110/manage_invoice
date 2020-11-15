@@ -24,27 +24,18 @@
     <div id="app">
         <div id='wrapper'>
                 <!-- Sidebar -->
-            @if(auth()->user())
             <div class="bg-light border-right" id="sidebar-wrapper">
                 <div class="sidebar-heading">Dashboard</div>
                 <div class="list-group list-group-flush">
-                    <a href="{{ route('home') }} " class="list-group-item list-group-item-action bg-light">Home</a>
-                    @if(auth()->user()->hasRole('admin'))
-                        <a href="{{ route('role.index') }} " class="list-group-item list-group-item-action bg-light">Roles</a>
-                        <a href="{{ route('permission.index') }} " class="list-group-item list-group-item-action bg-light">Permissions</a>
-                        <a href="{{ route('user.index') }} " class="list-group-item list-group-item-action bg-light">Users</a>
-                    @endif
-                    <a href="{{ route('loan.index') }} " class="list-group-item list-group-item-action bg-light">Loan Applications</a>
-                    <a href="{{ route('post.index') }} " class="list-group-item list-group-item-action bg-light">Post</a>
+                    <a href="{{ route('customer.index') }} " class="list-group-item list-group-item-action bg-light">Khách Hàng</a>
+                    <a href="{{ route('export.index') }} " class="list-group-item list-group-item-action bg-light">Xuất file</a>
                 </div>
             </div>
-            @endif
-
             <div id="page-content-wrapper">
                 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
                     <div class="container">
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            {{ config('app.name', 'Laravel') }}
+                            Quản lí hóa đơn
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                             <span class="navbar-toggler-icon"></span>
@@ -54,39 +45,6 @@
                             <!-- Left Side Of Navbar -->
                             <ul class="navbar-nav mr-auto">
 
-                            </ul>
-
-                            <!-- Right Side Of Navbar -->
-                            <ul class="navbar-nav ml-auto">
-                                <!-- Authentication Links -->
-                                @guest
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                    </li>
-                                    @if (Route::has('register'))
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                        </li>
-                                    @endif
-                                @else
-                                    <li class="nav-item dropdown">
-                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                            {{ Auth::user()->user_name }}
-                                        </a>
-
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                            document.getElementById('logout-form').submit();">
-                                                {{ __('Logout') }}
-                                            </a>
-
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                                @csrf
-                                            </form>
-                                        </div>
-                                    </li>
-                                @endguest
                             </ul>
                         </div>
                     </div>
