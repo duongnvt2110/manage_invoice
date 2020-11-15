@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        //Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         /*

@@ -28,7 +28,7 @@
                 <div class="sidebar-heading">Dashboard</div>
                 <div class="list-group list-group-flush">
                     <a href="{{ route('customer.index') }} " class="list-group-item list-group-item-action bg-light">Khách Hàng</a>
-                    <a href="{{ route('export.index') }} " class="list-group-item list-group-item-action bg-light">Xuất file</a>
+                    {{-- <a href="{{ route('export.index') }} " class="list-group-item list-group-item-action bg-light">Xuất file</a> --}}
                 </div>
             </div>
             <div id="page-content-wrapper">
