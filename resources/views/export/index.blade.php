@@ -13,7 +13,7 @@
                 <div class="customer-form">
                     <div class="form-group" style="padding-top:20px;">
                         <label for="Role Name"><span class="badge badge-secondary">Tên Khách Hàng<span></label>
-                    <input type="text" name="customer_name" class="form-control" value='{{$customer->customer_name}}' required>
+                    <input type="text" name="customer_name" class="form-control" value='{{$customer->customer_name}}' readonly required>
                     </div>
                     <table id="customer" class="table table-bordered" style="width:100%">
                         <thead>
@@ -30,11 +30,11 @@
                                     <tr><th><span class="badge badge-secondary">Ngày khởi tạo: {{$invoice->create_date}}</span></th></tr>
                                     @foreach($invoice->products as $key =>$item)
                                             <tr>
-                                            <td><input type="text" name="product_name[]" class="form-control" value='{{ $item['product_name']}}' required></td>
-                                            <td><input type="text" name="product_unit[]" class="form-control" value='{{ $item['product_unit']}}' required></td>
-                                            <td><input type="numberic" pattern="[0-9]" name="product_amount[]" class="form-control" value='{{ $item['product_amount']}}' required></td>
-                                            <td><input type="numberic" name="product_price[]" class="form-control" value='{{ $item['product_price']}}' required></td>
-                                            <input type="hidden" name="product_id[]" class="form-control" value='{{ $item['id']}}' required>
+                                            <td><input type="text" name="product_name[]" class="form-control" value='{{ $item['product_name']}}' required readonly></td>
+                                            <td><input type="text" name="product_unit[]" class="form-control" value='{{ $item['product_unit']}}' required readonly></td>
+                                            <td><input type="numberic" pattern="[0-9]" name="product_amount[]" class="form-control" value='{{ $item['product_amount']}}' required readonly></td>
+                                            <td><input type="numberic" name="product_price[]" class="form-control" value='{{ $item['product_price']}}' required readonly></td>
+                                            <input type="hidden" name="product_id[]" class="form-control" value='{{ $item['id']}}' required readonly>
                                         <tr>
                                     @endforeach
                                 @endforeach
@@ -59,6 +59,25 @@
                 <button type="submit" class="btn btn-primary">Xuất File Excel</button>
             </form>
         </div>
+        @if ($errors->any())
+            <div class="alert alert-danger" id="alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 </div>
+<script>
+    window.onload = function(){
+        var alert = document.getElementById('alert-danger');
+        if(alert){
+            setTimeout(function(){
+                alert.style.display = "none";
+            },2000);
+        }
+    }
+</script>
 @endsection

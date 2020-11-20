@@ -6,7 +6,6 @@ use App\Customer;
 use App\Repository\Customer\CustomerRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Services\CustomerService;
-use App\Services\GoogleService;
 
 class CustomerController extends Controller
 {
@@ -24,7 +23,6 @@ class CustomerController extends Controller
     {
         $this->customer = $customer;
         $this->customerService = new CustomerService();
-        $this->googleService = new GoogleService();
     }
 
     public function index(Request $request)
@@ -123,9 +121,4 @@ class CustomerController extends Controller
         return redirect()->route('customer.index');
     }
 
-    public function upload(Request $request){
-
-        $this->googleService->uploadFileGoogleDrive();
-
-    }
 }

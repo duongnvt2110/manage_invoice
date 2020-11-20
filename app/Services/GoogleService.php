@@ -63,14 +63,13 @@ class GoogleService{
         return $this->client;
     }
 
-    public function uploadFileGoogleDrive(){
-        $fileName = $this->dumpData();
-        $file = storage_path('google/data/'.$fileName);
+    public function uploadFileGoogleDrive($file){
+        $fileName = $file->getClientOriginalName();
         $this->setBodyUploadData($fileName);
         $this->service->files->create(
             $this->file,
             array(
-              'data' => file_get_contents($file),
+              'data' => file_get_contents($file->getRealPath()),
               'mimeType' => 'application/octet-stream',
               'uploadType' => 'resumable'
             )
