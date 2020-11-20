@@ -28,11 +28,11 @@ class GoogleService{
     {
         $this->client->setApplicationName('Google Drive');
         $this->client->setScopes(\Google_Service_Drive::DRIVE);
-        $this->client->setAuthConfig(storage_path('google/credentials.json'));
+        $this->client->setAuthConfig(config('google-api.client_path'));
         $this->client->setAccessType('offline');
         $this->client->setPrompt('select_account consent');
 
-        $tokenPath = storage_path('google/token.json');
+        $tokenPath = config('google-api.token_path');
         if (file_exists($tokenPath)) {
             $accessToken = json_decode(file_get_contents($tokenPath), true);
             $this->client->setAccessToken($accessToken);
@@ -79,7 +79,7 @@ class GoogleService{
     public function setBodyUploadData($fileName){
         $this->file->setName($fileName);
         // Id is a folder name
-        $this->file->setParents(['1Fo0Tm42VfBVSGeZzmTqeIynZ-tbhRGs-']);
+        $this->file->setParents(config('google-api.google_folder'));
     }
 
     public function dumpData(){
