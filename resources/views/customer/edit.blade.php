@@ -55,20 +55,6 @@
         </div>
     </div>
     <br>
-    <div class="card">
-        <div class="card-body">
-            <form method="POST" action="{{route('customer.export',['id'=>$customer->id])}}">
-                @csrf
-                <div class="customer-form" style="display:inline-block;">
-                    <input type="date" name="date_from" class="form-control">
-                </div>
-                <div class="customer-form" style="display:inline-block;">
-                    <input type="date" name="date_to" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Xuất File Excel</button>
-            </form>
-        </div>
-    </div>
 </div>
 <script>
     function addRow(){

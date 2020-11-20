@@ -11,12 +11,14 @@
         "php": "^7.2.5",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
+        "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
-        "phatnt99/advanced-query": "^1.0",
-        "spatie/laravel-permission": "^3.17"
+        "spatie/db-dumper": "^2.18",
+        "spatie/laravel-permission": "^3.17",
+        "symfony/process": "^5.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

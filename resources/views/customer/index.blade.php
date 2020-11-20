@@ -39,11 +39,14 @@
                 <td>
                     <div class="d-flex justify-content-center">
                         <div class="pr-2">
-                            <a href="{{ route('customer.edit',['id'=> $customer->id ])}}" class="btn btn-primary">Edit</a>
+                            <a href="{{ route('export.index',['id'=> $customer->id ])}}" class="btn btn-success">Export</a>
+                        </div>
+                        <div class="pr-2">
+                            <a href="{{ route('customer.edit',['id'=> $customer->id ])}}" class="btn btn-primary">Sửa</a>
                         </div>
                         <form method="POST" action="{{ route('customer.delete',['id'=> $customer->id ])}}" style="display: inline-flex;">
                             @csrf
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">Xóa</button>
                         </form>
                     </div>
                 </td>
