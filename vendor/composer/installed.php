@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '0af0c05833fbe360b7029d5a7295af88f610aaef',
+    'reference' => '7958c6d149f7dfaeddd4d9dc6dda918da4702e8f',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -151,6 +151,15 @@
       ),
       'reference' => '307fb34a5ab697461ec4c9db865b20ff2fd40771',
     ),
+    'firebase/php-jwt' => 
+    array (
+      'pretty_version' => 'v5.2.0',
+      'version' => '5.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'feb0e820b8436873675fd3aca04f3728eb2185cb',
+    ),
     'fruitcake/laravel-cors' => 
     array (
       'pretty_version' => 'v2.0.3',
@@ -168,6 +177,33 @@
       array (
       ),
       'reference' => 'fc10d778e4b84d5bd315dad194661e091d307c6f',
+    ),
+    'google/apiclient' => 
+    array (
+      'pretty_version' => 'v2.8.2',
+      'version' => '2.8.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '24f3ec0c79567a08c31f8271b61d79b050b25b0a',
+    ),
+    'google/apiclient-services' => 
+    array (
+      'pretty_version' => 'v0.153',
+      'version' => '0.153.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'db62bb19f32f81c9551f223c72be0682eb58ebd8',
+    ),
+    'google/auth' => 
+    array (
+      'pretty_version' => 'v1.14.3',
+      'version' => '1.14.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'c1503299c779af0cbc99b43788f75930988852cf',
     ),
     'guzzlehttp/guzzle' => 
     array (
@@ -431,7 +467,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '0af0c05833fbe360b7029d5a7295af88f610aaef',
+      'reference' => '7958c6d149f7dfaeddd4d9dc6dda918da4702e8f',
     ),
     'laravel/tinker' => 
     array (
@@ -608,15 +644,6 @@
       ),
       'reference' => '45a2ec53a73c70ce41d55cedef9063630abaf1b6',
     ),
-    'phatnt99/advanced-query' => 
-    array (
-      'pretty_version' => 'v1.0',
-      'version' => '1.0.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '49b4419e8e2b2ecef6e0574bd10a997668895883',
-    ),
     'phpdocumentor/reflection-common' => 
     array (
       'pretty_version' => '2.2.0',
@@ -661,6 +688,15 @@
       array (
       ),
       'reference' => '994ecccd8f3283ecf5ac33254543eb0ac946d525',
+    ),
+    'phpseclib/phpseclib' => 
+    array (
+      'pretty_version' => '2.0.29',
+      'version' => '2.0.29.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '497856a8d997f640b4a516062f84228a772a48a8',
     ),
     'phpspec/prophecy' => 
     array (
@@ -724,6 +760,15 @@
       array (
       ),
       'reference' => 'f5c8a5dd5e7e8d68d7562bfb48d47287d33937d6',
+    ),
+    'psr/cache' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'd11b50ad223250cf17b86e38383413f5a6764bf8',
     ),
     'psr/container' => 
     array (
@@ -967,6 +1012,15 @@
       array (
       ),
       'reference' => '99732be0ddb3361e16ad77b68ba41efc8e979019',
+    ),
+    'spatie/db-dumper' => 
+    array (
+      'pretty_version' => '2.18.0',
+      'version' => '2.18.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'eddb2b7c6877817d97bbdc1c60d1a800bf5a267a',
     ),
     'spatie/laravel-permission' => 
     array (

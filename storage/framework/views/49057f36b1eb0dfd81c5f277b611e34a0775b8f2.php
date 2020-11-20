@@ -1,1 +1,0 @@
-<?php /**PATH /var/www/laravel/resources/views/post/show.blade.php ENDPATH**/ ?>

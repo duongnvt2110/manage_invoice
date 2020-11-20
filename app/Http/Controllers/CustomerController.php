@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Repository\Customer\CustomerRepositoryInterface;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\CustomerExport;
 use App\Services\CustomerService;
+use App\Services\GoogleService;
 
 class CustomerController extends Controller
 {
     protected $customer;
 
     protected $customerService;
+
+    protected $googleService;
     /**
      * Display a listing of the resource.
      *
@@ -23,6 +24,7 @@ class CustomerController extends Controller
     {
         $this->customer = $customer;
         $this->customerService = new CustomerService();
+        $this->googleService = new GoogleService();
     }
 
     public function index(Request $request)
@@ -121,19 +123,9 @@ class CustomerController extends Controller
         return redirect()->route('customer.index');
     }
 
-    public function export(Request $request){
-        $request->validate([
-            'date_from' => 'required|date_format:Y-m-d',
-            'date_to' => 'required|date_format:Y-m-d',
-            'id'=>'required'
-        ]);
-        $exportForm = $request->all();
-        $customerService = new CustomerService();
-        $dataExport = $customerService->getFormExportData($exportForm);
-        if(!empty($dataExport)){
-            $dataExport = new CustomerExport($dataExport);
-            return Excel::download($dataExport, 'customers.xlsx');
-        }
-        return redirect()->route('customer.edit',[$exportForm['id']])->with('success','Data error!');
+    public function upload(Request $request){
+
+        $this->googleService->uploadFileGoogleDrive();
+
     }
 }

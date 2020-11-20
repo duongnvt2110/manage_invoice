@@ -67,13 +67,6 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
-  'phatnt99/advanced-query' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Phatnt99\\AdvancedQuery\\QueryServiceProvider',
-    ),
-  ),
   'spatie/laravel-permission' => 
   array (
     'providers' => 
