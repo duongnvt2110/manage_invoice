@@ -21,6 +21,9 @@ class ExportController extends Controller
             'date_from' => 'required|date_format:Y-m-d',
             'date_to' => 'required|date_format:Y-m-d',
             'id'=>'required'
+        ],[
+            'date_from.required' => 'Thiếu ngày bắt đầu xuất file',
+            'date_to.required' => 'Thiếu ngày kết thúc xuất file',
         ]);
         $exportForm = $request->all();
         $customerService = new CustomerService();
@@ -29,6 +32,6 @@ class ExportController extends Controller
             $dataExport = new CustomerExport($dataExport);
             return Excel::download($dataExport, 'customers.xlsx');
         }
-        return redirect()->route('customer.edit',[$exportForm['id']])->with('success','Data error!');
+        return redirect()->route('export.index',[$exportForm['id']])->with('success','Data error!');
     }
 }

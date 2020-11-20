@@ -42,4 +42,9 @@ Route::group(['middleware'=>'web','prefix'=>'export'], function () {
     Route::post('/customer','ExportController@export')->name('export.download');
 });
 
+
+Route::group(['middleware'=>'web','prefix'=>'upload'], function () {
+    Route::get('/','UploadController@index')->name('upload.index');
+    Route::post('/','UploadController@upload')->name('upload.upload');
+});
 //
