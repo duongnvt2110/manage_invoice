@@ -40,6 +40,10 @@ Route::group(['middleware'=>'web','prefix'=>'product'], function () {
 Route::group(['middleware'=>'web','prefix'=>'export'], function () {
     Route::get('/customer/{id}','ExportController@index')->name('export.index');
     Route::post('/customer','ExportController@export')->name('export.download');
+    Route::get('/pdf',function(){
+        $pdf = mb_convert_encoding(\View::make('pdf.index'), 'HTML-ENTITIES', 'UTF-8');
+        return \PDF::loadHtml($pdf)->download('invoice.pdf');
+    })->name('export.pdf');
 });
 
 

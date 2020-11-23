@@ -8,18 +8,19 @@ use App\Services\GoogleService;
 class UploadController extends Controller
 {
     //
-    public function index(){
+    public function index(GoogleService $googleService){
+        $googleService->dumpData();
         return view('upload.index');
     }
 
-    public function upload(Request $request,GoogleService $GoogleService){
+    public function upload(Request $request,GoogleService $googleService){
         $this->validate($request,[
             'files'=> 'required'
         ],[
             'files.required' => 'Thiếu file để  import'
         ]);
         $fileForm = $request->only('files');
-        $GoogleService->uploadFileGoogleDrive($fileForm['files']);
+        $googleService->uploadFileGoogleDrive($fileForm['files']);
         return view('upload.index');
     }
 }

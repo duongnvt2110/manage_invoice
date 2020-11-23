@@ -84,8 +84,7 @@ class GoogleService{
 
     public function dumpData(){
         //$filename = "backup-" . Carbon::now()->format('Y-m-d-His') . ".sql";
-        echo system('docker images', $ret);
-        //$command = "/usr/bin/mysqldump --user=" . env('DB_USERNAME') ." --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . " > " . storage_path( "/google/data/") . $filename;
+        $command = "/usr/bin/mysqldump --user=" . env('DB_USERNAME') ." --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . " > " . storage_path( "/google/data/test.sql") ;
         //$command = storage_path('google/dump.sh');
         // \Spatie\DbDumper\Databases\MySql::create()
         //     ->setDbName(env('DB_HOST'))
@@ -100,7 +99,9 @@ class GoogleService{
         //echo $process->getOutput();
         //'RET=`docker exec -it db_laravel /usr/bin/mysqldump -u root --password=root root > /home/duong/laravel/laravel/storage/google/data/backup.sql`;echo $RET'
         //echo shell_exec('docker images');
-        //exec($command);
+        dump($command);
+        exit;
+        exec($command);
         // return $filename;
     }
 }
